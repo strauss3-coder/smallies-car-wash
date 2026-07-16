@@ -1,0 +1,148 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------ */
+/*  DESIGN SYSTEM — global custom properties                          */
+/*  Mirrors tailwind.config.js so raw CSS + inline styles stay in sync */
+/* ------------------------------------------------------------------ */
+:root {
+  /* Brand */
+  --c-red: #e01b24;
+  --c-red-dark: #b3141b;
+  --c-red-light: #f04a52;
+  --c-blue: #1d4ed8;
+  --c-blue-dark: #12308f;
+  --c-blue-light: #3b82f6;
+
+  /* Neutrals */
+  --c-carbon: #fbfcfe;
+  --c-grey-light: #f1f4f9;
+  --c-grey-mid: #94a3b8;
+  --c-grey-dark: #475569;
+  --c-ink: #0f1b33;
+  --c-black: #05080f;
+
+  /* States */
+  --c-success: #16a34a;
+  --c-warning: #f59e0b;
+
+  /* Glass morphism */
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-border: rgba(255, 255, 255, 0.7);
+  --glass-blur: 16px;
+
+  /* Radius / container / rhythm */
+  --radius: 0.875rem;
+  --radius-lg: 1.25rem;
+  --container: 1200px;
+
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--c-carbon);
+  color: var(--c-ink);
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Selection */
+::selection {
+  background: var(--c-red);
+  color: #fff;
+}
+
+/* Scrollbar (desktop) */
+@media (pointer: fine) {
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--c-grey-light);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(var(--c-blue), var(--c-blue-dark));
+    border-radius: 999px;
+    border: 2px solid var(--c-grey-light);
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reusable component classes                                        */
+/* ------------------------------------------------------------------ */
+@layer components {
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    border: 1px solid var(--glass-border);
+  }
+
+  /* Section eyebrow label */
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-eyebrow uppercase text-brand-red;
+  }
+
+  /* Gradient text */
+  .text-gradient-brand {
+    background: linear-gradient(100deg, var(--c-blue) 0%, var(--c-red) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Animated underline links */
+  .link-underline {
+    position: relative;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    height: 2px;
+    width: 100%;
+    background: var(--c-red);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.35s var(--ease-smooth);
+  }
+  .link-underline:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+@layer utilities {
+  .shimmer-mask {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 20%, #000 80%, transparent);
+  }
+  /* Fade a section's bottom edge into the page for seamless stacking */
+  .fade-b {
+    -webkit-mask-image: linear-gradient(#000 82%, transparent);
+    mask-image: linear-gradient(#000 82%, transparent);
+  }
+}
+
+/* Respect reduced-motion for everyone who asks for it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
